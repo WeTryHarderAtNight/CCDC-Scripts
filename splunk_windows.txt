@@ -1,1 +1,2 @@
-bhttps://drive.google.com/file/d/12U0b3aqSwAHK8fj7_n4OCdGck6JKkmQG/view?usp=drivesd
+
+https://github.com/pogzyb/splooky/raw/master/splunkforwarder-7.2.4-8a94541dcfac-x64-release.msi
