@@ -1,2 +1,0 @@
-
-https://github.com/pogzyb/splooky/raw/master/splunkforwarder-7.2.4-8a94541dcfac-x64-release.msi
