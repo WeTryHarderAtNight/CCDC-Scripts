@@ -168,6 +168,7 @@ remove_firewall_service () {
 }
 
 remove_firewall_rule () {
+  echo $1
 }
 
 #View current firewall rules/iptables
@@ -179,13 +180,13 @@ then
   echo ""
   echo "Type a rule number you wish to remove for an unused port for incoming connections:"
   read rule
-  remove_firewall_rule $rule
+  remove_firewall_rule $answer
   echo "Displaying current outgoing firewall rules"
   sudo iptables -L OUTPUT --line-numbers
   echo ""
   echo "Type a rule number you wish to remove for an unused port for outgoing connections:"
   read rule
-  remove_firewall_rule $rule
+  remove_firewall_rule $answer
 else
   echo "Displaying current firewall rules"
   sudo firewall-cmd --list-all
