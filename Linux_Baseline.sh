@@ -143,106 +143,110 @@ users=$(cat /etc/passwd | grep /bin/bash | awk -F':' '{ print $1}')
 #   fi
 # done
 
-clear
+# clear
 
-#Delete firewall rules function
-remove_firewall_service () {
-  if [ $1 == "port" ]
-  then
-    port=0
-    while [ $port != "none" ]
-    do
-      echo "What port would you live removed? (Type in as 123/tcp or 123/udp format) Type none when finished:"
-      read port
-      if [ $port == "none" ]
-      then
-        :
-      else
-        sudo firewall-cmd --permanent --zone=public --remove-port=$port
-      fi
-    done
-  elif [ $1 == "service" ]
-    then
-    service=0
-    while [ $service != "none" ]
-    do
-      echo "What service would you live removed? (Type exactly as displayed on the console) Type none when finished:"
-      read service
-      if [ $service == "none" ]
-      then
-        :
-      else
-        sudo firewall-cmd --permanent --zone=public --remove-service=$service
-      fi
-    done
-  else
-    :
-  fi
-}
+# #Delete firewall rules function
+# remove_firewall_service () {
+#   if [ $1 == "port" ]
+#   then
+#     port=0
+#     while [ $port != "none" ]
+#     do
+#       echo "What port would you live removed? (Type in as 123/tcp or 123/udp format) Type none when finished:"
+#       read port
+#       if [ $port == "none" ]
+#       then
+#         :
+#       else
+#         sudo firewall-cmd --permanent --zone=public --remove-port=$port
+#       fi
+#     done
+#   elif [ $1 == "service" ]
+#     then
+#     service=0
+#     while [ $service != "none" ]
+#     do
+#       echo "What service would you live removed? (Type exactly as displayed on the console) Type none when finished:"
+#       read service
+#       if [ $service == "none" ]
+#       then
+#         :
+#       else
+#         sudo firewall-cmd --permanent --zone=public --remove-service=$service
+#       fi
+#     done
+#   else
+#     :
+#   fi
+# }
 
-remove_firewall_rule_input () {
-  echo $1 | egrep '^[0-9]+$' >/dev/null 2>&1
-  if [ "$?" -eq "0" ]
-  then
-    input=0
-    while [ $input != "none" ]
-    do
-      echo "What rule would you live removed? (Type an integer) Type none when finished:"
-      read input
-      if [ $input == "none" ]
-      then
-        :
-      else
-        sudo iptables -D INPUT $input
-      fi
-    done
-  else
-    :
-  fi 
-}
-remove_firewall_rule_output () {
-  echo $1 | egrep '^[0-9]+$' >/dev/null 2>&1
-  if [ "$?" -eq "0" ]
-  then
-    output=0
-    while [ $output != "none" ]
-    do
-      echo "What rule would you live removed? (Type an integer) Type none when finished:"
-      read input
-      if [ $output == "none"]
-      then
-        :
-      else
-        sudo iptables -D OUTPUT $output
-      fi
-    done
-  else
-    :
-  fi 
-}
+# remove_firewall_rule_input () {
+#   echo $1 | egrep '^[0-9]+$' >/dev/null 2>&1
+#   if [ "$?" -eq "0" ]
+#   then
+#     input=0
+#     while [ $input != "none" ]
+#     do
+#       echo "What rule would you live removed? (Type an integer) Type none when finished:"
+#       read input
+#       if [ $input == "none" ]
+#       then
+#         :
+#       else
+#         sudo iptables -D INPUT $input
+#       fi
+#     done
+#   else
+#     :
+#   fi 
+# }
+# remove_firewall_rule_output () {
+#   echo $1 | egrep '^[0-9]+$' >/dev/null 2>&1
+#   if [ "$?" -eq "0" ]
+#   then
+#     output=0
+#     while [ $output != "none" ]
+#     do
+#       echo "What rule would you live removed? (Type an integer) Type none when finished:"
+#       read input
+#       if [ $output == "none"]
+#       then
+#         :
+#       else
+#         sudo iptables -D OUTPUT $output
+#       fi
+#     done
+#   else
+#     :
+#   fi 
+# }
 
-#View current firewall rules/iptables
-version=$(cat /etc/*os-release | grep -w "NAME=")
-if [[ $version == *"Debian"* ]]
-then
-  echo "Displaying current incoming firewall rules"
-  sudo iptables -L INPUT --line-numbers
-  echo ""
-  echo "Type a rule number if you wish to remove  an unused port for incoming connections (Type none if there arent any):"
-  read answer
-  remove_firewall_rule_input $answer
-  echo "Displaying current outgoing firewall rules"
-  sudo iptables -L OUTPUT --line-numbers
-  echo ""
-  echo "Type a rule number if you wish to remove an unused port for outgoing connections (Type none if there arent any) :"
-  read answer
-  remove_firewall_rule_output $answer
-else
-  echo "Displaying current firewall rules"
-  sudo firewall-cmd --list-all
-  echo "Type 'port' or 'service' to removed unused rules:"
-  read answer
-  remove_firewall_service $answer
-  echo "Reloading firewall"
-  sudo firewall-cmd --reload
-fi
+# #View current firewall rules/iptables
+# version=$(cat /etc/*os-release | grep -w "NAME=")
+# if [[ $version == *"Debian"* ]]
+# then
+#   echo "Displaying current incoming firewall rules"
+#   sudo iptables -L INPUT --line-numbers
+#   echo ""
+#   echo "Type a rule number if you wish to remove  an unused port for incoming connections (Type none if there arent any):"
+#   read answer
+#   remove_firewall_rule_input $answer
+#   echo ""
+#   echo "Displaying current outgoing firewall rules"
+#   sudo iptables -L OUTPUT --line-numbers
+#   echo ""
+#   echo "Type a rule number if you wish to remove an unused port for outgoing connections (Type none if there arent any) :"
+#   read answer
+#   remove_firewall_rule_output $answer
+#   echo "Saving iptables to /root/iptables.fw"
+#   sudo iptables-save > /root/iptables.fw
+# else
+#   echo "Displaying current firewall rules"
+#   sudo firewall-cmd --list-all
+#   echo "Type 'port' or 'service' to removed unused rules:"
+#   read answer
+#   remove_firewall_service $answer
+#   echo "Reloading firewall"
+#   sudo firewall-cmd --reload
+# fi
+
