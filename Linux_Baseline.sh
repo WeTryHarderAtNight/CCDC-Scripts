@@ -285,16 +285,16 @@ clear
 echo "Displaying world readable/writeable/executable files for root in abnormal directories:"
 echo ""
 echo "Files found in /home"
-sudo find /home -o+wxr -group root
+sudo find /home -perm -o+wxr -group root
 echo ""
 echo "Files found in /tmp"
-sudo find /tmp -o+wxr -group root
+sudo find /tmp -perm -o+wxr -group root
 echo ""
 echo "Files found in /root"
-sudo find /root -o+wxr -group root
+sudo find /root -perm -o+wxr -group root
 echo ""
 echo "Files found in /var"
-sudo find /var -o+wxr -group root
+sudo find /var -perm -o+wxr -group root
 echo ""
 echo "Make note of any unusual files with executable files and delete if needed"
 sleep 10
