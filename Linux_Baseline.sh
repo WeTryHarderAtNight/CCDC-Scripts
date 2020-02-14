@@ -287,15 +287,19 @@ echo ""
 echo "Files found in /home"
 sudo find /home -perm -o+wxr -group root
 echo ""
+sleep 5
 echo "Files found in /tmp"
 sudo find /tmp -perm -o+wxr -group root
 echo ""
+sleep 5
 echo "Files found in /root"
 sudo find /root -perm -o+wxr -group root
 echo ""
+sleep 5
 echo "Files found in /var"
 sudo find /var -perm -o+wxr -group root | less
 echo ""
+sleep 5
 echo "Make note of any unusual files with executable files and delete if needed"
 sleep 30
 
