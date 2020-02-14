@@ -156,7 +156,7 @@ remove_firewall_service () {
       read port
       sudo firewall-cmd --permanent --zone=public --remove-port=$port
     done
-  else
+  elif [ $1 == "service" ]
     service=0
     while [ $service != "none" ]
     do
@@ -164,11 +164,39 @@ remove_firewall_service () {
       read service
       sudo firewall-cmd --permanent --zone=public --remove-service=$service
     done
+  else
+    :
   fi
 }
-
-remove_firewall_rule () {
-  echo $1
+remove_firewall_rule_input () {
+  echo $1 | egrep '^[0-9]+$' >/dev/null 2>&1
+  if [ "$?" -eq "0" ]
+  then
+    input=0
+    while [ $input != "none" ]
+    do
+      echo "What rule would you live removed? (Type an integer) Type none when finished:"
+      read input
+      sudo iptables -D INPUT $input
+    done
+  else
+    :
+  fi 
+}
+remove_firewall_rule_output () {
+  echo $1 | egrep '^[0-9]+$' >/dev/null 2>&1
+  if [ "$?" -eq "0" ]
+  then
+    input=0
+    while [ $output != "none" ]
+    do
+      echo "What rule would you live removed? (Type an integer) Type none when finished:"
+      read input
+      sudo iptables -D OUTPUT $output
+    done
+  else
+    :
+  fi 
 }
 
 #View current firewall rules/iptables
@@ -178,15 +206,15 @@ then
   echo "Displaying current incoming firewall rules"
   sudo iptables -L INPUT --line-numbers
   echo ""
-  echo "Type a rule number you wish to remove for an unused port for incoming connections:"
+  echo "Type a rule number if you wish to remove  an unused port for incoming connections (Type none if there arent any):"
   read rule
-  remove_firewall_rule $answer
+  remove_firewall_rule_input $answer
   echo "Displaying current outgoing firewall rules"
   sudo iptables -L OUTPUT --line-numbers
   echo ""
-  echo "Type a rule number you wish to remove for an unused port for outgoing connections:"
+  echo "Type a rule number if you wish to remove an unused port for outgoing connections (Type none if there arent any) :"
   read rule
-  remove_firewall_rule $answer
+  remove_firewall_rule_output $answer
 else
   echo "Displaying current firewall rules"
   sudo firewall-cmd --list-all
