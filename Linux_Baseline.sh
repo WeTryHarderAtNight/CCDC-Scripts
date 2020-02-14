@@ -256,14 +256,22 @@ version=$(cat /etc/*os-release | grep -w "NAME=")
 if [[ $version == *"Ubuntu"* ]]
 then
   echo "Services controlled by System V:"
-  sudo service --status-all | grep +
+  echo "Services with code + are running, review them. Press Q to quit once done"
+  sleep 5
+  sudo service --status-all | grep + | less
   echo "Services controlled by Upstart"
-  sudo initctl list | grep active
+  echo "Review the following, press Q to quit once done"
+  sleep 5
+  sudo initctl list | grep active | less
 elif [[ $version == *"Debian"* ]]
 then
   echo "Services controlled by System V:"
-  sudo service --status-all | grep +
+  echo "Review the following, press Q to quit once done"
+  sleep 5
+  sudo service --status-all | grep + | less
 else
   echo "Services controlled by Systemd"
-  systemctl -al | grep active | grep -v inactive
+  echo "Review the following, press Q to quit once done"
+  sleep 5
+  systemctl -al | grep active | grep -v inactive | less
 fi
