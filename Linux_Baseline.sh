@@ -1,4 +1,4 @@
-# #!/bin/bash
+#!/bin/bash
 
 # clear
 
@@ -250,28 +250,53 @@
 #   sudo firewall-cmd --reload
 # fi
 
+# clear
+# #Gathers running system services and outputs description
+# version=$(cat /etc/*os-release | grep -w "NAME=")
+# if [[ $version == *"Ubuntu"* ]]
+# then
+#   echo "Services controlled by System V:"
+#   echo "Services with code + are running, review them. Press Q to quit once done"
+#   sleep 5
+#   sudo service --status-all | grep + | less
+#   echo "Services controlled by Upstart"
+#   echo "Review the following, press Q to quit once done"
+#   sleep 5
+#   sudo initctl list | grep start/running | less
+# elif [[ $version == *"Debian"* ]]
+# then
+#   echo "Services controlled by System V:"
+#   echo "Services with code + are running, review them. Press Q to quit once done"
+#   sleep 5
+#   sudo service --status-all | grep + | less
+# else
+#   echo "Services controlled by Systemd"
+#   echo "Review the following, press Q to quit once done"
+#   sleep 5
+#   sudo systemctl -al | grep active | grep -v inactive | less
+# fi
+
+# echo ""
+# echo "If needed stop services, ask Gil on how to do that"
+
 clear
-#Gathers running system services and outputs description
-version=$(cat /etc/*os-release | grep -w "NAME=")
-if [[ $version == *"Ubuntu"* ]]
-then
-  echo "Services controlled by System V:"
-  echo "Services with code + are running, review them. Press Q to quit once done"
-  sleep 5
-  sudo service --status-all | grep + | less
-  echo "Services controlled by Upstart"
-  echo "Review the following, press Q to quit once done"
-  sleep 5
-  sudo initctl list | grep active | less
-elif [[ $version == *"Debian"* ]]
-then
-  echo "Services controlled by System V:"
-  echo "Review the following, press Q to quit once done"
-  sleep 5
-  sudo service --status-all | grep + | less
-else
-  echo "Services controlled by Systemd"
-  echo "Review the following, press Q to quit once done"
-  sleep 5
-  systemctl -al | grep active | grep -v inactive | less
-fi
+
+#Displaying world readable files for root in important documents
+echo "Displaying world readable/writeable/executable files for root in abnormal directories:"
+echo ""
+echo "Files found in /home"
+sudo find /home -o+wxr -group root
+echo ""
+echo "Files found in /tmp"
+sudo find /tmp -o+wxr -group root
+echo ""
+echo "Files found in /root"
+sudo find /root -o+wxr -group root
+echo ""
+echo "Files found in /var"
+sudo find /var -o+wxr -group root
+echo ""
+echo "Make note of any unusual files with executable files and delete if needed"
+sleep 10
+
+clear
