@@ -221,35 +221,49 @@
 #   fi 
 # }
 
-#View current firewall rules/iptables
-version=$(cat /etc/*os-release | grep -w "NAME=")
-if [[ $version == *"Debian"* ]] || [[ $version == *"Ubuntu"* ]]
-then
-  echo "Displaying current incoming firewall rules"
-  sudo iptables -L INPUT --line-numbers
-  echo ""
-  echo "Type a rule number if you wish to remove  an unused port for incoming connections (Type none if there arent any):"
-  read answer
-  remove_firewall_rule_input $answer
-  echo ""
-  echo "Displaying current outgoing firewall rules"
-  sudo iptables -L OUTPUT --line-numbers
-  echo ""
-  echo "Type a rule number if you wish to remove an unused port for outgoing connections (Type none if there arent any) :"
-  read answer
-  remove_firewall_rule_output $answer
-  echo "Saving iptables to /root/iptables.fw"
-  sudo iptables-save > /root/iptables.fw
-else
-  echo "Displaying current firewall rules"
-  sudo firewall-cmd --list-all
-  echo "Type 'port' or 'service' to removed unused rules:"
-  read answer
-  remove_firewall_service $answer
-  echo "Reloading firewall"
-  sudo firewall-cmd --reload
-fi
+# #View current firewall rules/iptables
+# version=$(cat /etc/*os-release | grep -w "NAME=")
+# if [[ $version == *"Debian"* ]] || [[ $version == *"Ubuntu"* ]]
+# then
+#   echo "Displaying current incoming firewall rules"
+#   sudo iptables -L INPUT --line-numbers
+#   echo ""
+#   echo "Type a rule number if you wish to remove  an unused port for incoming connections (Type none if there arent any):"
+#   read answer
+#   remove_firewall_rule_input $answer
+#   echo ""
+#   echo "Displaying current outgoing firewall rules"
+#   sudo iptables -L OUTPUT --line-numbers
+#   echo ""
+#   echo "Type a rule number if you wish to remove an unused port for outgoing connections (Type none if there arent any) :"
+#   read answer
+#   remove_firewall_rule_output $answer
+#   echo "Saving iptables to /root/iptables.fw"
+#   sudo iptables-save > /root/iptables.fw
+# else
+#   echo "Displaying current firewall rules"
+#   sudo firewall-cmd --list-all
+#   echo "Type 'port' or 'service' to removed unused rules:"
+#   read answer
+#   remove_firewall_service $answer
+#   echo "Reloading firewall"
+#   sudo firewall-cmd --reload
+# fi
 
-# clear
-# #Gathers running system services and outputs description
-# process_name=$(systemc)
+clear
+#Gathers running system services and outputs description
+version=$(cat /etc/*os-release | grep -w "NAME=")
+if [[ $version == *"Ubuntu"* ]]
+then
+  echo "Services controlled by System V:"
+  sudo service --status-all | grep +
+  echo "Services controlled by Upstart"
+  sudo initctl list | grep active
+elif [[ $version == *"Debian"* ]]
+then
+  echo "Services controlled by System V:"
+  sudo service --status-all | grep +
+else
+  echo "Services controlled by Systemd"
+  systemctl -al | grep active | grep -v inactive
+fi
