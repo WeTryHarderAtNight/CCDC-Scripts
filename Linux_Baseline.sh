@@ -294,9 +294,9 @@ echo "Files found in /root"
 sudo find /root -perm -o+wxr -group root
 echo ""
 echo "Files found in /var"
-sudo find /var -perm -o+wxr -group root
+sudo find /var -perm -o+wxr -group root | less
 echo ""
 echo "Make note of any unusual files with executable files and delete if needed"
-sleep 10
+sleep 30
 
 clear
