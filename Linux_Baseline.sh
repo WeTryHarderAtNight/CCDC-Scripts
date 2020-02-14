@@ -154,7 +154,12 @@ remove_firewall_service () {
     do
       echo "What port would you live removed? (Type in as 123/tcp or 123/udp format) Type none when finished:"
       read port
-      sudo firewall-cmd --permanent --zone=public --remove-port=$port
+      if [ $port == "none" ]
+      then
+        :
+      else
+        sudo firewall-cmd --permanent --zone=public --remove-port=$port
+      fi
     done
   elif [ $1 == "service" ]
     then
@@ -163,7 +168,12 @@ remove_firewall_service () {
     do
       echo "What service would you live removed? (Type exactly as displayed on the console) Type none when finished:"
       read service
-      sudo firewall-cmd --permanent --zone=public --remove-service=$service
+      if [ $service == "none" ]
+      then
+        :
+      else
+        sudo firewall-cmd --permanent --zone=public --remove-service=$service
+      fi
     done
   else
     :
@@ -179,7 +189,12 @@ remove_firewall_rule_input () {
     do
       echo "What rule would you live removed? (Type an integer) Type none when finished:"
       read input
-      sudo iptables -D INPUT $input
+      if [ $input == "none" ]
+      then
+        :
+      else
+        sudo iptables -D INPUT $input
+      fi
     done
   else
     :
@@ -189,12 +204,17 @@ remove_firewall_rule_output () {
   echo $1 | egrep '^[0-9]+$' >/dev/null 2>&1
   if [ "$?" -eq "0" ]
   then
-    input=0
+    output=0
     while [ $output != "none" ]
     do
       echo "What rule would you live removed? (Type an integer) Type none when finished:"
       read input
-      sudo iptables -D OUTPUT $output
+      if [ $output == "none"]
+      then
+        :
+      else
+        sudo iptables -D OUTPUT $output
+      fi
     done
   else
     :
