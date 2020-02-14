@@ -173,7 +173,7 @@ remove_firewall_rule () {
 
 #View current firewall rules/iptables
 version=$(cat /etc/*os-release | grep -w "NAME=")
-if [ "$version" == "*Debian*" ]
+if [[ $version == "*Debian*" ]]
 then
   echo "Displaying current incoming firewall rules"
   sudo iptables -L INPUT --line-numbers
