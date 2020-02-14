@@ -209,13 +209,13 @@ then
   sudo iptables -L INPUT --line-numbers
   echo ""
   echo "Type a rule number if you wish to remove  an unused port for incoming connections (Type none if there arent any):"
-  read rule
+  read answer
   remove_firewall_rule_input $answer
   echo "Displaying current outgoing firewall rules"
   sudo iptables -L OUTPUT --line-numbers
   echo ""
   echo "Type a rule number if you wish to remove an unused port for outgoing connections (Type none if there arent any) :"
-  read rule
+  read answer
   remove_firewall_rule_output $answer
 else
   echo "Displaying current firewall rules"
