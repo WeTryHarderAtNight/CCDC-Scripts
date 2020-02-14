@@ -157,6 +157,7 @@ remove_firewall_service () {
       sudo firewall-cmd --permanent --zone=public --remove-port=$port
     done
   elif [ $1 == "service" ]
+    then
     service=0
     while [ $service != "none" ]
     do
@@ -168,6 +169,7 @@ remove_firewall_service () {
     :
   fi
 }
+
 remove_firewall_rule_input () {
   echo $1 | egrep '^[0-9]+$' >/dev/null 2>&1
   if [ "$?" -eq "0" ]
