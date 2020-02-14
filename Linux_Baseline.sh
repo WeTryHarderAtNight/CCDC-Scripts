@@ -1,12 +1,12 @@
-#!/bin/bash
+# #!/bin/bash
 
-clear
+# clear
 
-#Grabs all current users that are able to login and displayes service accounts, also changes the passwords
-#and disables accounts if necessary
+# #Grabs all current users that are able to login and displayes service accounts, also changes the passwords
+# #and disables accounts if necessary
 
-# echo "The following accounts are able to login:"
-users=$(cat /etc/passwd | grep /bin/bash | awk -F':' '{ print $1}')
+# # echo "The following accounts are able to login:"
+# users=$(cat /etc/passwd | grep /bin/bash | awk -F':' '{ print $1}')
 # for f in $users;
 # do
 #   echo $f
@@ -221,32 +221,35 @@ users=$(cat /etc/passwd | grep /bin/bash | awk -F':' '{ print $1}')
 #   fi 
 # }
 
-# #View current firewall rules/iptables
-# version=$(cat /etc/*os-release | grep -w "NAME=")
-# if [[ $version == *"Debian"* ]]
-# then
-#   echo "Displaying current incoming firewall rules"
-#   sudo iptables -L INPUT --line-numbers
-#   echo ""
-#   echo "Type a rule number if you wish to remove  an unused port for incoming connections (Type none if there arent any):"
-#   read answer
-#   remove_firewall_rule_input $answer
-#   echo ""
-#   echo "Displaying current outgoing firewall rules"
-#   sudo iptables -L OUTPUT --line-numbers
-#   echo ""
-#   echo "Type a rule number if you wish to remove an unused port for outgoing connections (Type none if there arent any) :"
-#   read answer
-#   remove_firewall_rule_output $answer
-#   echo "Saving iptables to /root/iptables.fw"
-#   sudo iptables-save > /root/iptables.fw
-# else
-#   echo "Displaying current firewall rules"
-#   sudo firewall-cmd --list-all
-#   echo "Type 'port' or 'service' to removed unused rules:"
-#   read answer
-#   remove_firewall_service $answer
-#   echo "Reloading firewall"
-#   sudo firewall-cmd --reload
-# fi
+#View current firewall rules/iptables
+version=$(cat /etc/*os-release | grep -w "NAME=")
+if [[ $version == *"Debian"* ]] || [[ $version == *"Ubuntu"* ]]
+then
+  echo "Displaying current incoming firewall rules"
+  sudo iptables -L INPUT --line-numbers
+  echo ""
+  echo "Type a rule number if you wish to remove  an unused port for incoming connections (Type none if there arent any):"
+  read answer
+  remove_firewall_rule_input $answer
+  echo ""
+  echo "Displaying current outgoing firewall rules"
+  sudo iptables -L OUTPUT --line-numbers
+  echo ""
+  echo "Type a rule number if you wish to remove an unused port for outgoing connections (Type none if there arent any) :"
+  read answer
+  remove_firewall_rule_output $answer
+  echo "Saving iptables to /root/iptables.fw"
+  sudo iptables-save > /root/iptables.fw
+else
+  echo "Displaying current firewall rules"
+  sudo firewall-cmd --list-all
+  echo "Type 'port' or 'service' to removed unused rules:"
+  read answer
+  remove_firewall_service $answer
+  echo "Reloading firewall"
+  sudo firewall-cmd --reload
+fi
 
+# clear
+# #Gathers running system services and outputs description
+# process_name=$(systemc)
