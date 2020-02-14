@@ -146,29 +146,52 @@ users=$(cat /etc/passwd | grep /bin/bash | awk -F':' '{ print $1}')
 clear
 
 #Delete firewall rules function
+remove_firewall_service () {
+  if [ $1 == "port" ]
+  then
+    port=0
+    while [ $port != "none" ]
+    do
+      echo "What port would you live removed? (Type in as 123/tcp or 123/udp format) Type none when finished:"
+      read port
+      sudo firewall-cmd --permanent --zone=public --remove-port=$port
+    done
+  else
+    service=0
+    while [ $service != "none" ]
+    do
+      echo "What service would you live removed? (Type exactly as displayed on the console) Type none when finished:"
+      read service
+      sudo firewall-cmd --permanent --zone=public --remove-service=$service
+    done
+  fi
+}
+
 remove_firewall_rule () {
-  echo $1"rule"
 }
 
 #View current firewall rules/iptables
 version=$(cat /etc/*os-release | grep -w "NAME=")
 if [ "$version" == *"Debian"* ]
 then
-  echo "Displaying current firewall rules"
+  echo "Displaying current incoming firewall rules"
   sudo iptables -L INPUT --line-numbers
   echo ""
   echo "Type a rule number you wish to remove for an unused port for incoming connections:"
   read rule
   remove_firewall_rule $rule
+  echo "Displaying current outgoing firewall rules"
   sudo iptables -L OUTPUT --line-numbers
   echo ""
-echo "Type a rule number you wish to remove for an unused port for outgoing connections:"
+  echo "Type a rule number you wish to remove for an unused port for outgoing connections:"
   read rule
   remove_firewall_rule $rule
 else
   echo "Displaying current firewall rules"
   sudo firewall-cmd --list-all
-  echo "Type a port or service you want removed thatsa unused:"
-  read port
-  remove_firewall_rule $port
+  echo "Type 'port' or 'service' to removed unused rules:"
+  read answer
+  remove_firewall_service $answer
+  echo "Reloading firewall"
+  sudo firewall-cmd --reload
 fi
