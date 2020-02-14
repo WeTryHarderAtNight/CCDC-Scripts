@@ -20,7 +20,7 @@ read networks
 sudo sed -i 's/mydestination = $myhostname, localhost.$mydomain, localhost/mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain/g' /etc/postfix/main.cf
 sudo sed -i 's/inet_interfaces = localhost/inet_interfaces = all/g' /etc/postfix/main.cf
 sudo sed -i 's/inet_protocols = all/inet_protocols = ipv4/g' /etc/postfix/main.cf
-sudo sed -i 's/#mynetworks = 168.100.89.0/28, 127.0.0.0/8/mynetworks = '"$networks"'/g' /etc/postfix/main.cf
+sudo sed -i 's/#mynetworks = 168.100.89.0\/28\, 127.0.0.0\/8/mynetworks = '"$networks"'/g' /etc/postfix/main.cf
 echo ""
 echo "Changing remaining configuration"
 sudo sed -i 's,#home_mailbox = Maildir/,home_mailbox = Maildir/,g' /etc/postfix/main.cf
