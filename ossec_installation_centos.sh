@@ -16,8 +16,8 @@ sudo rpm -i pcre2-10.21-22.el6.x86_64.rpm
 sudo rpm -i pcre2-devel-10.21-22.el6.x86_64.rpm
 
 #Run installation package
-sudo ./install.sh
 cd ossec-hids-3.6.0
+sudo ./install.sh
 
 #Run manager server package
 sudo /var/ossec/bin/ossec-control start
