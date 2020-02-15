@@ -223,7 +223,7 @@ remove_firewall_rule_output () {
 
 #View current firewall rules/iptables
 version=$(cat /etc/*os-release | grep -w "NAME=")
-if [[ $version == *"Debian"* ]] || [[ $version == *"Ubuntu"* ]]
+if [[ $version == *"Debian"* ]] || [[ $version == *"Ubuntu"* ]] || [[ $version == *"CentOS"* ]]
 then
   echo "Displaying current incoming firewall rules"
   sudo iptables -L INPUT --line-numbers
